@@ -1,0 +1,97 @@
+{
+  "user": [
+    {
+      "id": 1,
+      "firstname": "Abiola",
+      "lastname": "Ojo",
+      "email": "abiolaojo@gmail.com",
+      "password": "oladimeji",
+      "phoneNumber": "08139471140",
+      "isAdmin": true
+    },
+    {
+      "firstname": "mary",
+      "lastname": "jay",
+      "email": "maryjay@gmail.com",
+      "password": "oladimeji",
+      "phonenumber": "08139371140",
+      "isAdmin": "false",
+      "id": 2
+    },
+    {
+      "firstname": "joe",
+      "lastname": "williams",
+      "email": "doyin@gmail.com",
+      "password": "oladimeji",
+      "phonenumber": "090344567",
+      "isAdmin": "false",
+      "id": 3
+    },
+    {
+      "firstname": "joe",
+      "lastname": "williams",
+      "email": "dimeji@gmail.com",
+      "password": "oladimeji",
+      "phonenumber": "090344567",
+      "isAdmin": "false",
+      "id": 3
+    }
+  ],
+  "loan": [
+    {
+      "id": 1,
+      "owner": "abiolaojo@gmail.com",
+      "Amount": 5000,
+      "tenor": 2,
+      "interest": 500,
+      "status": "approved",
+      "repaid": true,
+      "balance": 0,
+      "monthlyPayment": 2750
+    },
+    {
+      "id": 2,
+      "owner": "abiolaojo@gmail.com",
+      "Amount": 5000,
+      "tenor": 2,
+      "interest": 500,
+      "status": "pending",
+      "repaid": false,
+      "balance": 5500,
+      "monthlyPayment": 2750
+    },
+    {
+      "id": 3,
+      "owner": "doyin@gmail.com",
+      "Amount": 10000,
+      "tenor": 2,
+      "interest": 1000,
+      "status": "pending",
+      "repaid": false,
+      "balance": 11000,
+      "monthlyPayment": 7500
+    },
+    {
+      "id": 4,
+      "owner": "marayjay@gmail.com",
+      "Amount": 10000,
+      "tenor": 2,
+      "interest": 1000,
+      "status": "pending",
+      "repaid": false,
+      "balance": 11000,
+      "monthlyPayment": 7500
+    },
+    {
+      "id": 4,
+      "owner": "marayjay@gmail.com",
+      "Amount": 10000,
+      "tenor": 2,
+      "interest": 1000,
+      "status": "pending",
+      "repaid": true,
+      "balance": 0,
+      "monthlyPayment": 7500
+    }
+  ]
+}

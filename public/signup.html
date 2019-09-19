@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Signup</title>
+ <link rel="stylesheet" href="materialize.min.css">
+ <link href="icon.css" rel="stylesheet">
+ <link rel="stylesheet" href="styles/sign.css">
+</head>
+<body>
+    <nav class="nav-wraper">
+        <div class="container">
+         <a href="index.html" class="brand-logo"><img class="logog" src="img/logo.png" alt=""></a>
+         </div>
+         </nav>
+ <div class="container">
+  <div class="row">
+   <div class="background z-depth-4">
+      <form>
+          <h3>Sign Up</h3>
+          <div class="error red-text"></div>
+          <div class="input-field">
+              <i class="material-icons prefix">person</i>
+           <input type="text" id="firstname" class="validate" required="" aria-required="true">
+           <label for="firstname">First Name</label>
+          </div>
+          <div class="input-field">
+              <i class="material-icons prefix">person</i>
+            <input type="text" id="lastname" class="validate" required="" aria-required="true">
+            <label for="lastname">Last Name</label>
+           </div>
+           <div class="input-field">
+            <i class="material-icons prefix">email</i>
+             <input type="email" id="email" class="validate" required="" aria-required="true">
+             <label for="email">Email</label>
+             <span class="helper-text" data-error="please enter a valid email" data-success="right"></span>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">vpn_key</i>
+              <input type="password" id="password" class="validate" required="" aria-required="true">
+              <label for="password">password</label>
+             </div>
+             <div class="input-field">
+                <i class="material-icons prefix">phone</i>
+               <input type="number" id="phonenumber" class="validate" required="" aria-required="true">
+               <label for="phonenumber">Phone Number</label>
+              </div>
+              <input type="submit" class="btn-large" value="Signup">
+              <p>already have an account? <a href="signin.html">Signin</a> </p>
+               </form>
+              </div>
+   </div>
+  </div>
+ </div>
+  <script src="jquery-3.3.1.min.js"></script>
+  <script src="materialize.min.js"></script>
+  <script>
+    $(document).ready(function(){
+  $("form").on('submit', function(e){
+   e.preventDefault()
+  let firstname = $('#firstname').val()
+  let lastname = $('#lastname').val()
+  let email = $('#email').val()
+  let password = $('#password').val()
+  let phonenumber = $('#phonenumber').val()
+  if(password.length < 5){
+    $('.error').append(`<p class="error-msg">your password cannot be less than 5 characters</p>`)
+    setTimeout(function(){ $('.error-msg').remove()}, 5000)
+    return
+  }
+  const data = {
+   firstname,
+   lastname,
+   email,
+   password,
+   phonenumber,
+   isAdmin: false
+  }
+ $.ajax({
+    type        : 'GET',
+    url         : `https://abiola-loan-app.herokuapp.com/user?email=${email}`,
+})
+    .done(function(res) {
+       if(res.length){
+        $('.error').append(`<p class="error-msg">user already exist</p>`)
+    setTimeout(function(){ $('.error-msg').remove()}, 5000)
+    return
+       }
+       $.ajax({
+    type        : 'POST',
+    url         : `https://abiola-loan-app.herokuapp.com/user`,
+    data        :  data,
+    dataType    : 'json'
+})
+.done(function(result) {
+  localStorage.lastname = ''
+    localStorage.lastname = result.lastname
+    localStorage.removeItem(email)
+    localStorage.email = result.email
+    window.location = "dashboard.html"
+       })
+      })
+    
+})
+ })
+  </script>
+</body>
+</html>

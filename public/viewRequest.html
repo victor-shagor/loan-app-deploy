@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>View Loans</title>
+ <link rel="stylesheet" href="materialize.min.css">
+ <link href="icon.css" rel="stylesheet">
+ <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<header class="diff">
+  <nav class="nav-wraper">
+   <div class="container">
+    <a href="index.html" class="brand-logo"><img src="img/logo.png" alt=""></a>
+    </a>    
+    <ul class="right hide-on-med-and-down">
+     <li><a href="index.html">Home</a></li>
+     <li><a class="out" href="signin.html">Logout</a></li>
+     <li><a href="#" class="btn-floating white">
+       <i class="material-icons">person</i>
+     </a></li>
+     <span class="user">Welcome Name</span>
+    </ul>
+   </div>
+  </nav>
+  <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+            <div class="background">
+            </div>
+            <a href="#user"><img class="circle" src="img/messi.jpeg"></a>
+            <a href="#name"><span class="white-text name">John Doe</span></a>
+            <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+          </div></li>    
+          <li><a href="./admin.html">dashboard</a></li>
+    <li><a href="./viewRequest.html">View loan Request</a></li>
+    <li><a href="./viewAllLoans.html">View all Loans</a></li>
+  </ul>
+  <div class="content">
+  <a href="#" data-target="slide-out" class="sidenav-trigger">
+      <i class="material-icons">menu</i>
+  </a>
+  <div class="container view">
+    <div class="error red-text"></div>
+  <table class="striped centered responsive-table white-text">
+    <thead>
+      <tr>
+          <th></th>
+          <th>requester</th>
+          <th>Amount</th>
+          <th>Tenor</th>
+          <th>interest</th>
+          <th>monthlyPayment</th>
+          <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody class="table">
+    </tbody>
+  </table>
+ </div>
+</div>
+</header>
+<body>
+  <script src="jquery-3.3.1.min.js"></script>
+ <script src="materialize.min.js"></script>
+<script>
+  $(document).ready(function get(){
+   let name = localStorage.lastname
+   let email = localStorage.email
+   let output ='';
+   $('.sidenav').sidenav()
+   $('.user').html(`Welcome ${name}`)
+ $.ajax({
+    type        : 'GET',
+    url         : `https://abiola-loan-app.herokuapp.com/loan?status=pending`,
+})
+    .done(function(res) {
+  res.forEach((loan) =>{
+  
+   output += `
+   <tr>
+     <td><input type="submit" class="btn delete" data-id=${loan.id} id="delete"value="Delete"></td>
+     <td>${loan.owner}</td>
+     <td>${loan.Amount}</td>       
+     <td>${loan.tenor}</td>
+     <td>${loan.interest}</td>
+     <td>${loan.monthlyPayment}</td>
+     <td><input type="submit" class="btn approve" data-id=${loan.id} id="approval"value="Approve"><input type="submit" class ="btn reject" data-id=${loan.id} id="reject"value="reject"></td>
+     </tr>
+    ` 
+    
+  
+  })
+  $('.table').html(output);
+    })
+  $('.view').on('click', function(event){
+    let data;
+    let id = event.target.dataset.id
+    if(event.target.classList.contains('approve')){
+      data = {status:"approved"}
+    }
+    else if(event.target.classList.contains('reject')){
+      data = {status:"rejected"}
+    }
+    $.ajax({
+    type        : 'PATCH',
+    url         : `https://abiola-loan-app.herokuapp.com/loan/${id}`,
+    data        :  data,
+    dataType    : 'json'
+})
+    .done(function(res) {
+      get()
+    })
+    
+  })
+  $('.view').on('click', function(event){
+    let id;
+    if(event.target.classList.contains('delete')){
+      id = event.target.dataset.id
+    }
+    $.ajax({
+    type        : 'DELETE',
+    url         : `https://abiola-loan-app.herokuapp.com/loan/${id}`,
+    dataType    : 'json'
+})
+    .done(function(res) {
+      get()
+    })
+    
+  })
+  $('.out').on('click', function(){
+     localStorage.removeItem(lastname)
+     localStorage.removeItem(email)
+   })
+  })
+  </script>
+</body>
+</html>

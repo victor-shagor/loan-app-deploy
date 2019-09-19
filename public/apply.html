@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>Apply</title>
+ <link rel="stylesheet" href="materialize.min.css">
+ <link href="icon.css" rel="stylesheet">
+ <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<header>
+  <nav class="nav-wraper">
+   <div class="container">
+    <a href="index.html" class="brand-logo"><img src="img/logo.png" alt=""></a>
+    </a>    
+    <ul class="right hide-on-med-and-down">
+     <li><a href="index.html">Home</a></li>
+     <li><a class="out" href="signin.html">Logout</a></li>
+     <li><a href="#" class="btn-floating white">
+       <i class="material-icons">person</i>
+     </a></li>
+     <span class="user">Welcome Name</span>
+    </ul>
+   </div>
+  </nav>
+  <ul id="slide-out" class="sidenav">
+        <li><div class="user-view">
+            <div class="background">
+            </div>
+            <a href="#user"><img class="circle" src="img/messi.jpeg"></a>
+            <a href="#name"><span class="white-text name">John Doe</span></a>
+            <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+          </div></li>
+    <li><a href="./dashboard.html">dashboard</a></li>
+    <li><a href="#">Apply for Loan</a></li>
+    <li><a href="./viewLoan.html">View loan applications</a></li>
+  </ul>
+  <a href="#" data-target="slide-out" class="sidenav-trigger">
+      <i class="material-icons">menu</i>
+  </a>
+  <div class="container">
+    <div class="row">
+     <div class="apply z-depth-4">
+        <form>
+            <h4>Loan Application</h4>
+            <div class="error red-text"></div>
+            <div class="success green-text"></div>
+            <div class="input-field">
+             <input type="number" class="Amount">
+             <label for="Amount">Amount</label>
+            </div>
+              <select id="tenor" class="browser-default tenor">
+                <option value="" disabled selected>Choose Tenor(Months)</option>
+                <option value="4">4months</option>
+                <option value="6">6months</option>
+                <option value="8">8months</option>
+                <option value="12">12months</option>
+              </select>
+              <a href="#" class="btn-large submit">Apply</a>
+                 </form>
+                </div>
+     </div>
+    </div>
+   </div>
+<body class="body">
+  <script src="jquery-3.3.1.min.js"></script>
+ <script src="materialize.min.js"></script>
+<script>
+  $(document).ready(function(){
+    let name = localStorage.lastname
+    let email = localStorage.email
+   $('.sidenav').sidenav()
+   $('.user').html(`Welcome ${name}`)
+   $('select').formSelect();
+   $(".submit").on('click', function(e){
+   e.preventDefault()
+  let Amount = parseInt($('.Amount').val());
+  let tenor = parseInt($('.tenor').val());
+  let interest = (Amount*5) * (tenor/100)
+  let monthlyPayment = Math.ceil((Amount+interest)/tenor)
+  if(!Amount || Amount < 5000){
+    $('.error').append(`<p class="error-msg">You cannot borrow less than 5000</p>`)
+    setTimeout(function(){ $('.error-msg').remove()}, 5000) 
+    return
+  }
+  if(!tenor){
+    $('.error').append(`<p class="error-msg">Select tenor</p>`)
+    setTimeout(function(){ $('.error-msg').remove()}, 5000) 
+    return
+  }
+  const data = {
+   Amount,
+   tenor,
+   interest,
+   status: "pending",
+   balance: Amount,
+   monthlyPayment,
+   repaid: false,
+   owner: localStorage.email
+  }
+ $.ajax({
+    type        : 'GET',
+    url         : `https://abiola-loan-app.herokuapp.com/loan?owner=${email}&repaid=false`,
+})
+    .done(function(res) {
+       if(res.length){
+        $('.error').append(`<p class="error-msg">You have a pending or running loan</p>`)
+    setTimeout(function(){ $('.error-msg').remove()}, 5000) 
+    return
+       }
+       $.ajax({
+    type        : 'POST',
+    url         : "https://abiola-loan-app.herokuapp.com/loan",
+    data        :  data,
+    dataType    : 'json'
+})
+.done(function(result) {
+  $('.success').append(`<p class="success-msg">Loan Booked successfully</p>`)
+    setTimeout(function(){ $('.success-msg').remove()}, 5000)
+   $('.Amount').val() = '';
+   $('.tenor').val() = '';
+       })
+      })
+    
+})
+$('.out').on('click', function(){
+     localStorage.removeItem(lastname)
+     localStorage.removeItem(email)
+   })
+  })
+  </script>
+</body>
+</html>
