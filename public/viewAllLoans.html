@@ -34,7 +34,7 @@
           </div></li>
     <li><a href="./admin.html">dashboard</a></li>
     <li><a href="./viewRequest.html">View loan Request</a></li>
-    <li><a href="./viewAllLoans">View all Loans</a></li>
+    <li><a href="./viewAllLoans.html">View all Loans</a></li>
   </ul>
   <div class="content">
   <a href="#" data-target="slide-out" class="sidenav-trigger">
@@ -45,6 +45,7 @@
   <table class="striped centered responsive-table white-text">
     <thead>
       <tr>
+          <th>requester</th>
           <th>Amount</th>
           <th>Tenor</th>
           <th>interest</th>
@@ -77,6 +78,7 @@
   
    output += `
    <tr>
+   <td>${loan.owner}</td>
      <td>${loan.Amount}</td>       
      <td>${loan.tenor}</td>
      <td>${loan.interest}</td>
